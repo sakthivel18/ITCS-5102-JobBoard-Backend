@@ -28,7 +28,7 @@ data class Job(
         @JoinColumn(name = "user_id")
         @OnDelete(action = OnDeleteAction.CASCADE)
         @JsonIgnore
-        var user: User?
-
+        var user: User?,
+        var bookmarkedBy: List<String>
 )
 

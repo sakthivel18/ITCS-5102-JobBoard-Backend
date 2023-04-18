@@ -31,7 +31,8 @@ class JobPostingService(
                 applicantsApplied = request.applicantsApplied,
                 createdBy = user.email,
                 applicationLink = request.applicationLink,
-                user = user
+                user = user,
+                bookmarkedBy = request.bookmarkedBy
         )
         return jobRepo.save(job)
     }
@@ -49,6 +50,7 @@ class JobPostingService(
             job.applicantsApplied = request.applicantsApplied
             job.createdBy = request.createdBy
             job.applicationLink = request.applicationLink
+            job.bookmarkedBy = request.bookmarkedBy
 
             return jobRepo.save(job)
 

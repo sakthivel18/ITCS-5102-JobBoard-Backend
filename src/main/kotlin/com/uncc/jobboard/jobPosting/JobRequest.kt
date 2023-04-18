@@ -14,5 +14,6 @@ data class JobRequest(
         var addedDate: LocalDate?,
         var applicantsApplied: Int,
         var createdBy: String,
-        var applicationLink: String
+        var applicationLink: String,
+        var bookmarkedBy: List<String>
 )
