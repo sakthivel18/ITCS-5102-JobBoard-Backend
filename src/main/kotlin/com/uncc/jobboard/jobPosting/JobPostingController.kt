@@ -29,6 +29,13 @@ class JobPostingController(
         return jobService.getAllJobs()
     }
 
+    @GetMapping("/user")
+    fun getAllJobsOfUser(@RequestHeader("Authorization") token: String): MutableList<Job?>? {
+        val email = jwtService.extractUsername(token.substring(7))
+        val user = findUserId(email) ?: throw Exception("User not found")
+        return jobService.getAllJobsOfUser(user)
+    }
+
     @GetMapping("/{id}")
     fun getJobById(@PathVariable id: Int):Job?{
         return jobService.getJobById(id)

@@ -1,8 +1,8 @@
 package com.uncc.jobboard.jobPosting
 
+import com.uncc.jobboard.job.Job
 import com.uncc.jobboard.job.JobRepository
 import com.uncc.jobboard.user.User
-import com.uncc.jobboard.user.UserRepository
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 import com.uncc.jobboard.job.Job as JobEntity
@@ -66,4 +66,12 @@ class JobPostingService(
         }
         return false
     }
+
+    fun getAllJobsOfUser(user: User): MutableList<Job?>? {
+        return jobRepo.findAll()
+            .stream()
+            .filter { j -> j?.createdBy == user.email }
+            .toList()
+    }
+
 }
