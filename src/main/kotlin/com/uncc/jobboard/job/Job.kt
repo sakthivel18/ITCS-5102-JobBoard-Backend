@@ -1,7 +1,10 @@
 package com.uncc.jobboard.job
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.uncc.jobboard.user.User
 import jakarta.persistence.*
+import org.hibernate.annotations.OnDelete
+import org.hibernate.annotations.OnDeleteAction
 import java.time.LocalDate
 
 @Entity
@@ -19,10 +22,12 @@ data class Job(
         var workMode: String,
         var addedDate: LocalDate,
         var applicantsApplied: Int? = null,
-        var isCreated: Boolean,
+        var createdBy: String,
         var applicationLink: String,
-        @ManyToOne
+        @ManyToOne(fetch = FetchType.LAZY, optional = false)
         @JoinColumn(name = "user_id")
+        @OnDelete(action = OnDeleteAction.CASCADE)
+        @JsonIgnore
         var user: User?
 
 )

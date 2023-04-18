@@ -1,27 +1,24 @@
 package com.uncc.jobboard.jobPosting
 
-import com.uncc.jobboard.job.Job
 import com.uncc.jobboard.job.JobRepository
 import com.uncc.jobboard.user.User
 import com.uncc.jobboard.user.UserRepository
 import org.springframework.stereotype.Service
 import java.time.LocalDate
-import com.uncc.jobboard.job.Job as Job1
+import com.uncc.jobboard.job.Job as JobEntity
 
 @Service
 class JobPostingService(
-        private val jobRepo : JobRepository,
-        private val userRepo: UserRepository,
+        private val jobRepo : JobRepository
 
 ) {
-    fun getAllJobs(): MutableList<Job1?> = jobRepo.findAll()
+    fun getAllJobs(): MutableList<JobEntity?> = jobRepo.findAll()
 
-    fun getJobById(id: Int): Job1? = jobRepo.findById(id).orElse(null)
+    fun getJobById(id: Int): JobEntity? = jobRepo.findById(id).orElse(null)
 
-    fun createJob(request: JobRequest): Job1 {
-        val user = userRepo.findById(request.userId).orElse(null)
+    fun createJob(request: JobRequest, user: User): JobEntity {
 
-        val job = Job1(
+        val job = JobEntity(
 
                 title = request.title,
                 companyName = request.companyName,
@@ -32,16 +29,16 @@ class JobPostingService(
                 workMode = request.workMode,
                 addedDate = LocalDate.now(),
                 applicantsApplied = request.applicantsApplied,
-                isCreated = true,
+                createdBy = user.email,
                 applicationLink = request.applicationLink,
                 user = user
         )
         return jobRepo.save(job)
     }
 
-    fun updateJobById(id: Int,request: JobRequest):Job1? {
+    fun updateJobById(id: Int,request: JobRequest):JobEntity? {
         val job = jobRepo.findById(id).orElse(null)
-        if(job!=null){
+        if(job != null){
             job.title = request.title
             job.companyName = request.companyName
             job.description = request.description
@@ -49,12 +46,11 @@ class JobPostingService(
             job.experience = request.experience
             job.jobType = request.jobType
             job.workMode = request.workMode
-            job.addedDate = request.addedDate
             job.applicantsApplied = request.applicantsApplied
-            job.isCreated = request.isCreated
+            job.createdBy = request.createdBy
             job.applicationLink = request.applicationLink
 
-            return  jobRepo.save(job)
+            return jobRepo.save(job)
 
         }
         return null

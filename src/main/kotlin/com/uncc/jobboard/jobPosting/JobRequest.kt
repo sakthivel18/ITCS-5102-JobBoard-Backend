@@ -1,5 +1,6 @@
 package com.uncc.jobboard.jobPosting
 
+import org.springframework.data.annotation.CreatedBy
 import java.time.LocalDate
 
 data class JobRequest(
@@ -10,9 +11,8 @@ data class JobRequest(
         var experience: String,
         var jobType: String,
         var workMode:String,
-        var addedDate: LocalDate,
+        var addedDate: LocalDate?,
         var applicantsApplied: Int,
-        var isCreated: Boolean,
-        var applicationLink: String,
-        var userId: Int
+        var createdBy: String,
+        var applicationLink: String
 )
