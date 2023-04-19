@@ -23,18 +23,36 @@ class AuthenticationService (
 ) {
 
     fun register(request: RegisterRequest): AuthenticationResponse {
-
-        val user = User(
+        val user:User
+        if (request.role == "user") {
+             user = User(
                 firstname = request.firstname,
                 lastname = request.lastname,
                 email = request.email,
                 password = passwordEncoder.encode(request.password),
                 role = Role.USER
-        )
+            )
+        } else {
+            user = User(
+                firstname = request.firstname,
+                lastname = request.lastname,
+                email = request.email,
+                password = passwordEncoder.encode(request.password),
+                role = Role.ADMIN
+            )
+
+        }
+
         val savedUser: User = repository.save(user)
         val jwtToken: String = jwtService.generateToken(user)
         saveUserToken(savedUser, jwtToken)
-        return AuthenticationResponse(jwtToken)
+        return AuthenticationResponse(
+                    firstname = user.firstname,
+                    lastname = user.lastname,
+                    email = user.email,
+                    role = user.role,
+                    token = jwtToken
+                )
     }
 
     fun authenticate(request: AuthenticationRequest): AuthenticationResponse {
@@ -51,10 +69,22 @@ class AuthenticationService (
             val jwtToken: String = jwtService.generateToken(user)
             revokeAllUserTokens(user)
             saveUserToken(user, jwtToken)
-            return AuthenticationResponse(token = jwtToken)
+            return AuthenticationResponse(
+                firstname = user.firstname,
+                lastname = user.lastname,
+                email = user.email,
+                role = user.role,
+                token = jwtToken
+            )
         }
 
-        return AuthenticationResponse(token = "")
+        return AuthenticationResponse(
+            firstname = "",
+            lastname = "",
+            email = "",
+            role = null,
+            token = ""
+        )
 
     }
 
