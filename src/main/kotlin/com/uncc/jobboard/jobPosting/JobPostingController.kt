@@ -6,17 +6,18 @@ import com.uncc.jobboard.user.User
 import com.uncc.jobboard.user.UserRepository
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
+import org.springframework.http.ResponseEntity
 import org.springframework.web.ErrorResponse
 import org.springframework.web.bind.annotation.*
 
 
-@CrossOrigin(
-        origins = ["http://localhost:3000"],
-        maxAge = 3600L,
-        allowCredentials = "true",
-        allowedHeaders = ["Authorization", "Cache-Control", "Content-Type"],
-        exposedHeaders = ["X-Get-Header"]
-)
+//@CrossOrigin(
+//        origins = ["http://localhost:3000"],
+//        maxAge = 3600L,
+//        allowCredentials = "true",
+//        allowedHeaders = ["Authorization", "Cache-Control", "Content-Type"],
+//        exposedHeaders = ["X-Get-Header"]
+//)
 @RestController
 @RequestMapping("/api/v1/jobs")
 class JobPostingController(
@@ -24,9 +25,10 @@ class JobPostingController(
     private val jwtService: JwtService,
     private val userRepository: UserRepository
     ) {
-    @GetMapping
-    fun getAllJobs(): MutableList<Job?> {
-        return jobService.getAllJobs()
+    @GetMapping("/")
+    fun getAllJobs(): ResponseEntity<MutableList<Job?>> {
+        val response = jobService.getAllJobs()
+        return ResponseEntity.ok(response)
     }
 
     @GetMapping("/user")

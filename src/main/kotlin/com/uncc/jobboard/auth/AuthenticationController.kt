@@ -8,13 +8,13 @@ import org.springframework.web.ErrorResponse
 import org.springframework.web.bind.annotation.*
 
 
-@CrossOrigin(
-    origins = ["http://localhost:3000"],
-    maxAge = 3600L,
-    allowCredentials = "true",
-    allowedHeaders = ["Authorization", "Cache-Control", "Content-Type"],
-    exposedHeaders = ["X-Get-Header"]
-)
+//@CrossOrigin(
+//    origins = ["http://localhost:3000"],
+//    maxAge = 3600L,
+//    allowCredentials = "true",
+//    allowedHeaders = ["Authorization", "Cache-Control", "Content-Type"],
+//    exposedHeaders = ["X-Get-Header"]
+//)
 @RestController
 @RequestMapping("/api/v1/auth")
 class AuthenticationController(private val service: AuthenticationService) {

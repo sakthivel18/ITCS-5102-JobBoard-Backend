@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.web.servlet.config.annotation.CorsRegistry
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 class ApplicationConfig(private val repository: UserRepository) {
@@ -40,5 +42,20 @@ class ApplicationConfig(private val repository: UserRepository) {
     @Bean
     fun passwordEncoder(): PasswordEncoder {
         return BCryptPasswordEncoder()
+    }
+
+    @Bean
+    fun configure(): WebMvcConfigurer? {
+        return object : WebMvcConfigurer {
+            override fun addCorsMappings(reg: CorsRegistry) {
+                reg.addMapping("/**")
+                    .allowedOriginPatterns("*")
+                    .allowedHeaders("*")
+                    .allowedMethods("*")
+                    .allowCredentials(true)
+                    .maxAge(3600L)
+                    .exposedHeaders("*")
+            }
+        }
     }
 }
