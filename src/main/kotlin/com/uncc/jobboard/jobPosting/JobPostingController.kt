@@ -1,9 +1,11 @@
 package com.uncc.jobboard.jobPosting
 
+import com.uncc.jobboard.auth.AuthenticationController
 import com.uncc.jobboard.config.JwtService
 import com.uncc.jobboard.job.Job
 import com.uncc.jobboard.user.User
 import com.uncc.jobboard.user.UserRepository
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
@@ -26,7 +28,8 @@ class JobPostingController(
     private val userRepository: UserRepository
     ) {
     @GetMapping("/")
-    fun getAllJobs(): ResponseEntity<MutableList<Job?>> {
+    fun getAllJobs(@RequestHeader("Authorization") token: String): ResponseEntity<MutableList<Job?>> {
+        logger.info(token)
         val response = jobService.getAllJobs()
         return ResponseEntity.ok(response)
     }
@@ -36,6 +39,14 @@ class JobPostingController(
         val email = jwtService.extractUsername(token.substring(7))
         val user = findUserId(email) ?: throw Exception("User not found")
         return jobService.getAllJobsOfUser(user)
+    }
+
+    @GetMapping("/companies")
+    fun getCompanyNames() : MutableList<String?>? {
+        return jobService.getAllJobs().stream()
+            .map { job -> job?.companyName }
+            .distinct()
+            .toList()
     }
 
     @GetMapping("/{id}")
@@ -77,5 +88,8 @@ class JobPostingController(
             .build()
     }
 
+    companion object {
+        private val logger = LoggerFactory.getLogger(JobPostingController::class.java)
+    }
 
 }

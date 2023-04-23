@@ -5,13 +5,13 @@ import com.uncc.jobboard.job.Job
 import org.springframework.web.bind.annotation.*
 
 
-@CrossOrigin(
-    origins = ["http://localhost:3000"],
-    maxAge = 3600L,
-    allowCredentials = "true",
-    allowedHeaders = ["Authorization", "Cache-Control", "Content-Type"],
-    exposedHeaders = ["X-Get-Header"]
-)
+//@CrossOrigin(
+//    origins = ["http://localhost:3000"],
+//    maxAge = 3600L,
+//    allowCredentials = "true",
+//    allowedHeaders = ["Authorization", "Cache-Control", "Content-Type"],
+//    exposedHeaders = ["X-Get-Header"]
+//)
 @RestController
 @RequestMapping("/api/v1/bookmarks")
 class BookmarkController(
