@@ -1,3 +1,11 @@
 package com.uncc.jobboard.auth
 
-data class AuthenticationResponse (val token: String)
+import com.uncc.jobboard.user.Role
+
+data class AuthenticationResponse (
+    val firstname: String,
+    val lastname: String,
+    val email: String,
+    val role: Role?,
+    val token: String
+)
